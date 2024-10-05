@@ -5,6 +5,10 @@
 			"guid": "00000000000000000000000000000000",
 			"description": "Default Uncontrolled Changelist",
 			"files": [
+				"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Content/SnakeGame3D/Levels/GameLevel.umap",
+				"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Content/SnakeGame3D/BP_GameMode.uasset",
+				"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Content/SnakeGame3D/BP_SnakeGameMode.uasset",
+				"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Content/SnakeGame3D/BP_SnakeGrid.uasset",
 				"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Content/Levels/GameLevel.umap"
 			]
 		}

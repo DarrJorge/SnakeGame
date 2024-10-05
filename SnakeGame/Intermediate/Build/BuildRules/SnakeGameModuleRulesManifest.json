@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/SnakeGame.Build.cs",
+		"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame.Target.cs",
+		"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGameEditor.Target.cs"
+	],
+	"EngineVersion": "5.3.2"
+}
