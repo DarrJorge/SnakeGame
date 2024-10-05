@@ -1,0 +1,12 @@
+{
+	"version": 1,
+	"changelists": [
+		{
+			"guid": "00000000000000000000000000000000",
+			"description": "Default Uncontrolled Changelist",
+			"files": [
+				"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Content/Levels/GameLevel.umap"
+			]
+		}
+	]
+}
