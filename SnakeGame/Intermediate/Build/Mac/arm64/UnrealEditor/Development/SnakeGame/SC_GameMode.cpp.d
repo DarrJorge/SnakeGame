@@ -4059,5 +4059,8 @@
   Runtime/Engine/Classes/GameFramework/PlayerController.h \
   ../Intermediate/Build/Mac/UnrealEditor/Inc/Engine/UHT/GameModeBase.generated.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SC_GameMode.generated.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Core/Grid.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_Grid.h \
-  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_Grid.generated.h
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_Grid.generated.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_Pawn.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_Pawn.generated.h

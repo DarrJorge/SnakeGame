@@ -4044,6 +4044,7 @@
   Runtime/CoreUObject/Public/UObject/GeneratedCppIncludes.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_Pawn.h \
   Runtime/Core/Public/CoreMinimal.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Core/Types.h \
   Runtime/Engine/Classes/GameFramework/Pawn.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_Pawn.generated.h \
   Runtime/CoreUObject/Public/UObject/ObjectMacros.h \

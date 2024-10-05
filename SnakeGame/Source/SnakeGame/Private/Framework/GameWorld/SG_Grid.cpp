@@ -40,14 +40,14 @@ void ASG_Grid::DrawGrid()
 	{
 		const FVector StartLocation = GetActorLocation() + GetActorForwardVector() * CellSize * i;
 		const FVector EndLocation = StartLocation + GetActorRightVector() * WorldWidth;
-		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, -1.0f, 1.f);
+		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, -1.0f, 0,2.f);
 	}
 
 	for (int32 i = 0; i < GridDimension.width + 1; ++i)
 	{
 		const FVector StartLocation = GetActorLocation() + GetActorRightVector() * CellSize * i;
 		const FVector EndLocation = StartLocation + GetActorForwardVector() * WorldHeight;
-		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, -1.0f, 1.f);
+		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, -1.0f, 0,2.f);
 	}
 }
 
