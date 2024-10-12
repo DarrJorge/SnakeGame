@@ -4043,4 +4043,5 @@
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/arm64/UnrealEditor/Development/SnakeGame/Definitions.SnakeGame.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Core/Grid.h \
   Runtime/Core/Public/CoreMinimal.h \
-  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Core/Types.h
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Core/Types.h \
+  Runtime/Core/Public/Containers/List.h

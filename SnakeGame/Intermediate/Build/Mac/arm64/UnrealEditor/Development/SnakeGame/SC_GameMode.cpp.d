@@ -4045,6 +4045,7 @@
   Runtime/Core/Public/CoreMinimal.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Core/Game.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Core/Types.h \
+  Runtime/Core/Public/Containers/List.h \
   Runtime/Engine/Classes/GameFramework/GameModeBase.h \
   Runtime/CoreUObject/Public/UObject/ObjectMacros.h \
   Runtime/Core/Public/Misc/Guid.h \
@@ -4058,9 +4059,52 @@
   Runtime/CoreOnline/Public/Online/CoreOnline.h \
   Runtime/Engine/Classes/GameFramework/PlayerController.h \
   ../Intermediate/Build/Mac/UnrealEditor/Inc/Engine/UHT/GameModeBase.generated.h \
+  Runtime/Engine/Classes/Engine/DataTable.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SC_GameMode.generated.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Core/Grid.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_Grid.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_WorldTypes.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_WorldTypes.generated.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_Grid.generated.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_Pawn.h \
-  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_Pawn.generated.h
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_Pawn.generated.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_Snake.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Core/Snake.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_Snake.generated.h \
+  Runtime/Engine/Classes/Engine/ExponentialHeightFog.h \
+  ../Intermediate/Build/Mac/UnrealEditor/Inc/Engine/UHT/ExponentialHeightFog.generated.h \
+  Runtime/Engine/Classes/Components/ExponentialHeightFogComponent.h \
+  Runtime/Engine/Classes/Components/SceneComponent.h \
+  ../Intermediate/Build/Mac/UnrealEditor/Inc/Engine/UHT/ExponentialHeightFogComponent.generated.h \
+  Runtime/Engine/Classes/Kismet/GameplayStatics.h \
+  Runtime/CoreUObject/Public/UObject/Object.h \
+  Runtime/Engine/Classes/Engine/EngineTypes.h \
+  Runtime/CoreUObject/Public/UObject/Interface.h \
+  Runtime/Engine/Public/CollisionQueryParams.h \
+  Runtime/Engine/Classes/Engine/LatentActionManager.h \
+  Runtime/Engine/Classes/Kismet/BlueprintFunctionLibrary.h \
+  Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h \
+  Runtime/Engine/Classes/Engine/HitResult.h \
+  Runtime/CoreUObject/Public/UObject/UnrealType.h \
+  Runtime/CoreUObject/Public/UObject/TextProperty.h \
+  Runtime/CoreUObject/Public/UObject/SoftObjectPtr.h \
+  Runtime/CoreUObject/Public/UObject/PropertyAccessUtil.h \
+  Runtime/Core/Public/Containers/UnrealString.h \
+  Runtime/Core/Public/CoreGlobals.h Runtime/Core/Public/HAL/Platform.h \
+  Runtime/Core/Public/Misc/EnumClassFlags.h \
+  Runtime/Core/Public/Templates/Function.h \
+  Runtime/Core/Public/Templates/UniquePtr.h \
+  Runtime/Core/Public/UObject/NameTypes.h \
+  Runtime/CoreUObject/Public/UObject/TopLevelAssetPath.h \
+  Runtime/Engine/Classes/Engine/CollisionProfile.h \
+  Runtime/CoreUObject/Public/AssetRegistry/ARFilter.h \
+  Runtime/CoreUObject/Public/UObject/Class.h \
+  Runtime/CoreUObject/Public/UObject/SoftObjectPath.h \
+  ../Intermediate/Build/Mac/UnrealEditor/Inc/Engine/UHT/KismetSystemLibrary.generated.h \
+  Runtime/Engine/Classes/Sound/DialogueTypes.h \
+  ../Intermediate/Build/Mac/UnrealEditor/Inc/Engine/UHT/DialogueTypes.generated.h \
+  /Users/Shared/Epic\ Games/UE_5.3/Engine/Source/Runtime/Engine/Classes/Kismet/GameplayStaticsTypes.h \
+  /Users/Shared/Epic\ Games/UE_5.3/Engine/Source/Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h \
+  ../Intermediate/Build/Mac/UnrealEditor/Inc/Engine/UHT/GameplayStaticsTypes.generated.h \
+  Runtime/Engine/Classes/Particles/WorldPSCPool.h \
+  ../Intermediate/Build/Mac/UnrealEditor/Inc/Engine/UHT/GameplayStatics.generated.h

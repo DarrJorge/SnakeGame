@@ -4046,7 +4046,11 @@
   Runtime/Core/Public/CoreMinimal.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Core/Game.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Core/Types.h \
+  Runtime/Core/Public/Containers/List.h \
   Runtime/Engine/Classes/GameFramework/Actor.h \
-  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_Grid.generated.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_WorldTypes.h \
+  Runtime/Engine/Classes/Engine/DataTable.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_WorldTypes.generated.h \
   Runtime/CoreUObject/Public/UObject/ObjectMacros.h \
-  Runtime/CoreUObject/Public/UObject/ScriptMacros.h
+  Runtime/CoreUObject/Public/UObject/ScriptMacros.h \
+  /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SG_Grid.generated.h

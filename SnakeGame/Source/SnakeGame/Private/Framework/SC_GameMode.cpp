@@ -5,6 +5,16 @@
 #include "Core/Grid.h"
 #include "Framework/GameWorld/SG_Grid.h"
 #include "Framework/GameWorld/SG_Pawn.h"
+#include "Framework/GameWorld/SG_WorldTypes.h"
+#include "Framework/GameWorld/SG_Snake.h"
+#include "Engine/ExponentialHeightFog.h"
+#include "Components/ExponentialHeightFogComponent.h"
+#include "Kismet/GameplayStatics.h"
+
+ASC_GameMode::ASC_GameMode()
+{
+	PrimaryActorTick.bCanEverTick = true;
+}
 
 void ASC_GameMode::StartPlay()
 {
@@ -13,17 +23,27 @@ void ASC_GameMode::StartPlay()
 	check(GetWorld());
 
 	// init core game
-	SnakeGame::Settings GridSizeLocal{GridSize.X, GridSize.Y};
-	CoreGame = MakeUnique<SnakeGame::Game>(GridSizeLocal);
+	SnakeGame::Settings GridSizeSettings;
+	GridSizeSettings.gridSize = SnakeGame::Dimension{GridSize.X, GridSize.Y};
+	GridSizeSettings.gameSpeed = GameSpeed;
+	GridSizeSettings.snake.defaultSize = SnakeDefaultSize;
+	GridSizeSettings.snake.startPosition = SnakeGame::Position{GridSize.X/2, GridSize.Y/2};
+	
+	CoreGame = MakeUnique<SnakeGame::Game>(GridSizeSettings);
 
 	// init world grid
 	const FTransform GridOrigin = FTransform::Identity;
 	GridVisual = GetWorld()->SpawnActorDeferred<ASG_Grid>(GridVisualClass, GridOrigin);
 	check(GridVisual);
-	
 	GridVisual->SetModel(CoreGame->getGrid(), CellSize);
 	GridVisual->FinishSpawning(GridOrigin);
 
+	// init world snake
+	SnakeVisual = GetWorld()->SpawnActorDeferred<ASG_Snake>(SnakeVisualClass, GridOrigin);
+	check(SnakeVisual);
+	SnakeVisual->SetModel(CoreGame->getSnake(), CellSize, CoreGame->getGrid()->getDimension());
+	SnakeVisual->FinishSpawning(GridOrigin);
+	
 	// set pawn location fitting grid in viewport
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 	check(PlayerController);
@@ -31,6 +51,63 @@ void ASC_GameMode::StartPlay()
 	ASG_Pawn* ASGPawn = Cast<ASG_Pawn>(PlayerController->GetPawn());
 	check(ASGPawn);
 	check(CoreGame->getGrid());
-
 	ASGPawn->UpdateLocation(CoreGame->getGrid()->getDimension(), CellSize, GridOrigin);
+
+	// find fog
+	FindFog();
+	
+	// update colors
+	check(ColorsTable);
+	const auto RowsCount = ColorsTable->GetRowNames().Num();
+	check(RowsCount >= 1);
+	
+	ColorTableIndex = FMath::RandRange(0, RowsCount - 1);
+	UpdateColors();
+}
+
+void ASC_GameMode::UpdateColors()
+{
+	const FName RowName = ColorsTable->GetRowNames()[ColorTableIndex];
+
+	if (const auto ColorSet = ColorsTable->FindRow<FSnakeColors>(RowName, {}))
+	{
+		GridVisual->UpdateColors(*ColorSet);
+
+		// update scene ambient color via fog
+		if (Fog && Fog->GetComponent())
+		{
+			Fog->GetComponent()->SkyAtmosphereAmbientContributionColorScale = ColorSet->SkyAtmosphereColor;
+			Fog->MarkComponentsRenderStateDirty();
+		}
+	}
+}
+
+void ASC_GameMode::FindFog()
+{
+	TArray<AActor*> Fogs;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AExponentialHeightFog::StaticClass(), Fogs);
+
+	if (Fogs.Num() > 0)
+	{
+		Fog = Cast<AExponentialHeightFog>(Fogs[0]);
+	}
+}
+
+void ASC_GameMode::NextColor()
+{
+	if (ColorsTable)
+	{
+		ColorTableIndex = (ColorTableIndex + 1) % ColorsTable->GetRowNames().Num();
+		UpdateColors();
+	}
+}
+
+void ASC_GameMode::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (CoreGame.IsValid())
+	{
+		CoreGame->update(DeltaSeconds, SnakeInput);
+	}
 }
