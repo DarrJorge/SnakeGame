@@ -262,6 +262,8 @@
 -I"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame"
 -I"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source"
 -I"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public"
+-I"../Plugins/EnhancedInput/Intermediate/Build/Mac/UnrealEditor/Inc/EnhancedInput/UHT"
+-I"../Plugins/EnhancedInput/Source/EnhancedInput/Public"
 -isystem"ThirdParty/mimalloc/include"
 -isystem"ThirdParty/LibTiff/Source/Mac"
 -isystem"ThirdParty/LibTiff/Source"

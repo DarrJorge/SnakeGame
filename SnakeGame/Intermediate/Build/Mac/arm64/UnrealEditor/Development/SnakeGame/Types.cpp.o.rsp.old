@@ -259,6 +259,7 @@
 -I"../Intermediate/Build/Mac/UnrealEditor/Inc/WidgetRegistration/UHT"
 -I"Developer/WidgetRegistration/Public"
 -I"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT"
+-I"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame"
 -I"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source"
 -I"/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public"
 -isystem"ThirdParty/mimalloc/include"

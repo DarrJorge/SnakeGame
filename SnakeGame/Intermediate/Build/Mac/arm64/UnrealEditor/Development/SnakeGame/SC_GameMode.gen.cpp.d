@@ -4061,4 +4061,7 @@
   Runtime/Engine/Classes/GameFramework/PlayerController.h \
   ../Intermediate/Build/Mac/UnrealEditor/Inc/Engine/UHT/GameModeBase.generated.h \
   Runtime/Engine/Classes/Engine/DataTable.h \
+  ../Plugins/EnhancedInput/Source/EnhancedInput/Public/InputActionValue.h \
+  Runtime/InputCore/Classes/InputCoreTypes.h \
+  ../Plugins/EnhancedInput/Intermediate/Build/Mac/UnrealEditor/Inc/EnhancedInput/UHT/InputActionValue.generated.h \
   /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Intermediate/Build/Mac/UnrealEditor/Inc/SnakeGame/UHT/SC_GameMode.generated.h

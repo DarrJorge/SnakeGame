@@ -1,5 +1,5 @@
-/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_WorldTypes.h
-/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_Pawn.h
+/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/SC_GameMode.h
 /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_Grid.h
 /Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_Snake.h
-/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/SC_GameMode.h
+/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_Pawn.h
+/Users/darr_jorge/Projects/Unreal/SnakeGame/SnakeGame/Source/SnakeGame/Public/Framework/GameWorld/SG_WorldTypes.h

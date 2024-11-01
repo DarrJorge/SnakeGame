@@ -22,6 +22,13 @@ namespace SnakeGame
 	{
 		int8 x;
 		int8 y;
+
+		Input(int8 inX, int8 inY) : x(inX), y(inY){}
+
+		bool opposite(const Input& rhs) const
+		{
+			return (x == -rhs.x && x != 0) || (y == -rhs.y && y != 0);
+		}
 	};
 
 	struct Position

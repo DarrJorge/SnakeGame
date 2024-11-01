@@ -14,6 +14,8 @@ void EmptyLinkFunctionForGeneratedCodeSC_GameMode() {}
 	ENGINE_API UClass* Z_Construct_UClass_AExponentialHeightFog_NoRegister();
 	ENGINE_API UClass* Z_Construct_UClass_AGameModeBase();
 	ENGINE_API UClass* Z_Construct_UClass_UDataTable_NoRegister();
+	ENHANCEDINPUT_API UClass* Z_Construct_UClass_UInputAction_NoRegister();
+	ENHANCEDINPUT_API UClass* Z_Construct_UClass_UInputMappingContext_NoRegister();
 	SNAKEGAME_API UClass* Z_Construct_UClass_ASC_GameMode();
 	SNAKEGAME_API UClass* Z_Construct_UClass_ASC_GameMode_NoRegister();
 	SNAKEGAME_API UClass* Z_Construct_UClass_ASG_Grid_NoRegister();
@@ -98,6 +100,18 @@ void EmptyLinkFunctionForGeneratedCodeSC_GameMode() {}
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_GameSpeed_MetaData[];
 #endif
 		static const UECodeGen_Private::FFloatPropertyParams NewProp_GameSpeed;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_MoveForwardInputAction_MetaData[];
+#endif
+		static const UECodeGen_Private::FObjectPtrPropertyParams NewProp_MoveForwardInputAction;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_MoveRightInputAction_MetaData[];
+#endif
+		static const UECodeGen_Private::FObjectPtrPropertyParams NewProp_MoveRightInputAction;
+#if WITH_METADATA
+		static const UECodeGen_Private::FMetaDataPairParam NewProp_MappingContext_MetaData[];
+#endif
+		static const UECodeGen_Private::FObjectPtrPropertyParams NewProp_MappingContext;
 #if WITH_METADATA
 		static const UECodeGen_Private::FMetaDataPairParam NewProp_GridVisual_MetaData[];
 #endif
@@ -189,6 +203,27 @@ void EmptyLinkFunctionForGeneratedCodeSC_GameMode() {}
 #endif
 	const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_ASC_GameMode_Statics::NewProp_GameSpeed = { "GameSpeed", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASC_GameMode, GameSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ASC_GameMode_Statics::NewProp_GameSpeed_MetaData), Z_Construct_UClass_ASC_GameMode_Statics::NewProp_GameSpeed_MetaData) };
 #if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MoveForwardInputAction_MetaData[] = {
+		{ "Category", "TheSnake|SnakeInput" },
+		{ "ModuleRelativePath", "Public/Framework/SC_GameMode.h" },
+	};
+#endif
+	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MoveForwardInputAction = { "MoveForwardInputAction", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASC_GameMode, MoveForwardInputAction), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MoveForwardInputAction_MetaData), Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MoveForwardInputAction_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MoveRightInputAction_MetaData[] = {
+		{ "Category", "TheSnake|SnakeInput" },
+		{ "ModuleRelativePath", "Public/Framework/SC_GameMode.h" },
+	};
+#endif
+	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MoveRightInputAction = { "MoveRightInputAction", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASC_GameMode, MoveRightInputAction), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MoveRightInputAction_MetaData), Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MoveRightInputAction_MetaData) };
+#if WITH_METADATA
+	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MappingContext_MetaData[] = {
+		{ "Category", "TheSnake|SnakeInput" },
+		{ "ModuleRelativePath", "Public/Framework/SC_GameMode.h" },
+	};
+#endif
+	const UECodeGen_Private::FObjectPtrPropertyParams Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MappingContext = { "MappingContext", nullptr, (EPropertyFlags)0x0024080000010001, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ASC_GameMode, MappingContext), Z_Construct_UClass_UInputMappingContext_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MappingContext_MetaData), Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MappingContext_MetaData) };
+#if WITH_METADATA
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_ASC_GameMode_Statics::NewProp_GridVisual_MetaData[] = {
 		{ "ModuleRelativePath", "Public/Framework/SC_GameMode.h" },
 	};
@@ -214,6 +249,9 @@ void EmptyLinkFunctionForGeneratedCodeSC_GameMode() {}
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASC_GameMode_Statics::NewProp_ColorsTable,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASC_GameMode_Statics::NewProp_SnakeDefaultSize,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASC_GameMode_Statics::NewProp_GameSpeed,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MoveForwardInputAction,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MoveRightInputAction,
+		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASC_GameMode_Statics::NewProp_MappingContext,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASC_GameMode_Statics::NewProp_GridVisual,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASC_GameMode_Statics::NewProp_SnakeVisual,
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_ASC_GameMode_Statics::NewProp_Fog,
@@ -256,9 +294,9 @@ void EmptyLinkFunctionForGeneratedCodeSC_GameMode() {}
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
 	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_darr_jorge_Projects_Unreal_SnakeGame_SnakeGame_Source_SnakeGame_Public_Framework_SC_GameMode_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_ASC_GameMode, ASC_GameMode::StaticClass, TEXT("ASC_GameMode"), &Z_Registration_Info_UClass_ASC_GameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASC_GameMode), 1612750777U) },
+		{ Z_Construct_UClass_ASC_GameMode, ASC_GameMode::StaticClass, TEXT("ASC_GameMode"), &Z_Registration_Info_UClass_ASC_GameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ASC_GameMode), 736813397U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_darr_jorge_Projects_Unreal_SnakeGame_SnakeGame_Source_SnakeGame_Public_Framework_SC_GameMode_h_2895468492(TEXT("/Script/SnakeGame"),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_darr_jorge_Projects_Unreal_SnakeGame_SnakeGame_Source_SnakeGame_Public_Framework_SC_GameMode_h_1312815703(TEXT("/Script/SnakeGame"),
 		Z_CompiledInDeferFile_FID_darr_jorge_Projects_Unreal_SnakeGame_SnakeGame_Source_SnakeGame_Public_Framework_SC_GameMode_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_darr_jorge_Projects_Unreal_SnakeGame_SnakeGame_Source_SnakeGame_Public_Framework_SC_GameMode_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);

@@ -10,6 +10,8 @@
 #include "Engine/ExponentialHeightFog.h"
 #include "Components/ExponentialHeightFogComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
 
 ASC_GameMode::ASC_GameMode()
 {
@@ -63,6 +65,8 @@ void ASC_GameMode::StartPlay()
 	
 	ColorTableIndex = FMath::RandRange(0, RowsCount - 1);
 	UpdateColors();
+
+	SetupInput();
 }
 
 void ASC_GameMode::UpdateColors()
@@ -100,6 +104,39 @@ void ASC_GameMode::NextColor()
 		ColorTableIndex = (ColorTableIndex + 1) % ColorsTable->GetRowNames().Num();
 		UpdateColors();
 	}
+}
+
+void ASC_GameMode::SetupInput()
+{
+	if (!GetWorld()) return;
+	
+	if (const auto* PlayerController = GetWorld()->GetFirstPlayerController())
+	{
+		if (auto* InputSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			InputSystem->AddMappingContext(MappingContext, 0);
+		}
+
+		auto* Input = Cast<UEnhancedInputComponent>(PlayerController->InputComponent);
+		check(Input);
+		
+		Input->BindAction(MoveForwardInputAction, ETriggerEvent::Triggered, this, &ThisClass::OnMoveForward);
+		Input->BindAction(MoveRightInputAction, ETriggerEvent::Triggered, this, &ThisClass::OnMoveRight);
+	}
+}
+
+void ASC_GameMode::OnMoveForward(const FInputActionValue& Value)
+{
+	const FVector2D InputValue = Value.Get<FVector2D>();
+	if (InputValue.X == 0.0) return;
+	SnakeInput = SnakeGame::Input{0, static_cast<int8>(InputValue.X)};
+}
+
+void ASC_GameMode::OnMoveRight(const FInputActionValue& Value)
+{
+	const FVector2D InputValue = Value.Get<FVector2D>();
+	if (InputValue.X == 0.0) return;
+	SnakeInput = SnakeGame::Input{static_cast<int8>(InputValue.X), 0};
 }
 
 void ASC_GameMode::Tick(float DeltaSeconds)
