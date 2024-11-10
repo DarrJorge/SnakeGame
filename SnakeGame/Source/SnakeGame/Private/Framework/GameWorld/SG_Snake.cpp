@@ -2,6 +2,7 @@
 
 
 #include "Framework/GameWorld/SG_Snake.h"
+#include "Framework/GameWorld/SG_SnakeLink.h"
 
 using namespace SnakeGame;
 
@@ -30,9 +31,10 @@ void ASG_Snake::BeginPlay()
 	uint32 i = 0;
 	for (const auto& Link : Links)
 	{
-		const bool IsHead = i == 0;
 		const FTransform Transform = FTransform(LinkPositionToVector(Link, CellSize, Dimension));
-		auto* LinkActor = GetWorld()->SpawnActor<AActor>(IsHead ? SnakeHeadClass : SnakeBodyClass, Transform);
+		auto* LinkActor = GetWorld()->SpawnActorDeferred<ASG_SnakeLink>(i == 0 ? SnakeHeadClass : SnakeBodyClass, Transform);
+		LinkActor->UpdateScale(CellSize);
+		LinkActor->FinishSpawning(Transform);
 		SnakeLinks.Add(LinkActor);
 		++i;
 	}
@@ -57,5 +59,13 @@ void ASG_Snake::Tick(float DeltaTime)
 	{
 		LinkActor->SetActorLocation(LinkPositionToVector(LinkPtr->GetValue(), CellSize, Dimension));
 		LinkPtr = LinkPtr->GetNextNode();
+	}
+}
+
+void ASG_Snake::UpdateColors(const FSnakeColors& Colors)
+{
+	for (int32 i = 0; i < SnakeLinks.Num(); ++i)
+	{
+		SnakeLinks[i]->UpdateColors(i == 0 ? Colors.SnakeHeadColor : Colors.SnakeLinkColor);
 	}
 }

@@ -25,7 +25,7 @@ namespace SnakeGame
 
 		Input(int8 inX, int8 inY) : x(inX), y(inY){}
 
-		bool opposite(const Input& rhs) const
+		inline bool opposite(const Input& rhs) const
 		{
 			return (x == -rhs.x && x != 0) || (y == -rhs.y && y != 0);
 		}
@@ -59,6 +59,17 @@ namespace SnakeGame
 		float gameSpeed{1.0f};
 	};
 
-	using TSnakeList = TDoubleLinkedList<Position>;
-	using TPositionPtr = TSnakeList::TDoubleLinkedListNode;
+
+	using TPositionPtr = TDoubleLinkedList<Position>::TDoubleLinkedListNode;
+	
+	class TSnakeList : public TDoubleLinkedList<Position>
+	{
+	public:
+		void MoveTail(TPositionPtr* tail, TPositionPtr* head, const Position& pos)
+		{
+			RemoveNode(tail);
+			InsertNode(pos, head->GetNextNode());
+		}
+	};
+
 }

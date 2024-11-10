@@ -29,7 +29,9 @@ void Grid::initWalls()
 		{
 			if (x == 0 || x == c_dimension.width-1 || y == 0 || y == c_dimension.height-1)
 			{
-				m_cells[posToIndex(x, y)] = CellType::Wall;
+				const auto index = posToIndex(x, y);
+				m_cells[index] = CellType::Wall;
+				m_indByType[CellType::Wall].Add(index);
 			}
 		}
 	}
@@ -44,20 +46,19 @@ void Grid::update(const TPositionPtr* links, CellType cellType)
 	{
 		const auto index = posToIndex(link->GetValue());
 		m_cells[index] = cellType;
+		m_indByType[cellType].Add(index);
 		link = link->GetNextNode();
 	}
 }
 
 void Grid::resetCellsByType(CellType cellType)
 {
-	// need optimize later
-	for (auto& cell : m_cells)
+	for (uint32 i = 0; i < m_indByType[cellType].Num(); ++i)
 	{
-		if (cell == cellType)
-		{
-			cell = CellType::Empty;
-		}
+		const uint32 ind = m_indByType[cellType][i];
+		m_cells[ind] = CellType::Empty;
 	}
+	m_indByType[cellType].Empty();
 }
 
 bool Grid::hitTest(const Position& position, CellType cellType) const

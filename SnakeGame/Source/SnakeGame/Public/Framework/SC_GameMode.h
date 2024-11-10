@@ -41,7 +41,7 @@ protected:
 	TSubclassOf<ASG_Snake> SnakeVisualClass;
 
 	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SnakeGrid")
-	UDataTable* ColorsTable;
+	TObjectPtr<UDataTable> ColorsTable;
 
 	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Snake", meta=(ClampMin="4", ClampMax="10"))
 	uint32 SnakeDefaultSize{5};
@@ -54,6 +54,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SnakeInput")
 	TObjectPtr<UInputAction> MoveRightInputAction;
+
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SnakeInput")
+	TObjectPtr<UInputAction> ResetGameInputAction;
 
 	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SnakeInput")
 	TObjectPtr<UInputMappingContext> MappingContext;
@@ -73,7 +76,7 @@ private:
 
 	uint32 ColorTableIndex{0};
 	
-	void UpdateColors();
+	void UpdateColors() const;
 	void FindFog();
 
 	UFUNCTION(Exec, Category="SnakeGame|Console command")
@@ -82,5 +85,8 @@ private:
 	void SetupInput();
 	void OnMoveForward(const FInputActionValue& Value);
 	void OnMoveRight(const FInputActionValue& Value);
+	void OnResetGame(const FInputActionValue& Value);
+
+	SnakeGame::Settings MakeSettings() const;
 	
 };

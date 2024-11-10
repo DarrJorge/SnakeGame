@@ -25,13 +25,7 @@ void ASC_GameMode::StartPlay()
 	check(GetWorld());
 
 	// init core game
-	SnakeGame::Settings GridSizeSettings;
-	GridSizeSettings.gridSize = SnakeGame::Dimension{GridSize.X, GridSize.Y};
-	GridSizeSettings.gameSpeed = GameSpeed;
-	GridSizeSettings.snake.defaultSize = SnakeDefaultSize;
-	GridSizeSettings.snake.startPosition = SnakeGame::Position{GridSize.X/2, GridSize.Y/2};
-	
-	CoreGame = MakeUnique<SnakeGame::Game>(GridSizeSettings);
+	CoreGame = MakeUnique<SnakeGame::Game>(MakeSettings());
 
 	// init world grid
 	const FTransform GridOrigin = FTransform::Identity;
@@ -69,13 +63,16 @@ void ASC_GameMode::StartPlay()
 	SetupInput();
 }
 
-void ASC_GameMode::UpdateColors()
+void ASC_GameMode::UpdateColors() const
 {
 	const FName RowName = ColorsTable->GetRowNames()[ColorTableIndex];
 
 	if (const auto ColorSet = ColorsTable->FindRow<FSnakeColors>(RowName, {}))
 	{
 		GridVisual->UpdateColors(*ColorSet);
+
+		// update colors for snake
+		SnakeVisual->UpdateColors(*ColorSet);
 
 		// update scene ambient color via fog
 		if (Fog && Fog->GetComponent())
@@ -122,6 +119,7 @@ void ASC_GameMode::SetupInput()
 		
 		Input->BindAction(MoveForwardInputAction, ETriggerEvent::Triggered, this, &ThisClass::OnMoveForward);
 		Input->BindAction(MoveRightInputAction, ETriggerEvent::Triggered, this, &ThisClass::OnMoveRight);
+		Input->BindAction(ResetGameInputAction, ETriggerEvent::Started, this, &ThisClass::OnResetGame);
 	}
 }
 
@@ -137,6 +135,31 @@ void ASC_GameMode::OnMoveRight(const FInputActionValue& Value)
 	const FVector2D InputValue = Value.Get<FVector2D>();
 	if (InputValue.X == 0.0) return;
 	SnakeInput = SnakeGame::Input{static_cast<int8>(InputValue.X), 0};
+}
+
+void ASC_GameMode::OnResetGame(const FInputActionValue& Value)
+{
+	if (const bool InputValue = Value.Get<bool>())
+	{
+		CoreGame.Reset(new SnakeGame::Game(MakeSettings()));
+		check(CoreGame.IsValid());
+		
+		GridVisual->SetModel(CoreGame->getGrid(), CellSize);
+		SnakeVisual->SetModel(CoreGame->getSnake(), CellSize, CoreGame->getGrid()->getDimension());
+		SnakeInput = SnakeGame::Input{1, 0};
+		NextColor();
+	}
+}
+
+SnakeGame::Settings ASC_GameMode::MakeSettings() const
+{
+	SnakeGame::Settings GridSizeSettings;
+	GridSizeSettings.gridSize = SnakeGame::Dimension{GridSize.X, GridSize.Y};
+	GridSizeSettings.gameSpeed = GameSpeed;
+	GridSizeSettings.snake.defaultSize = SnakeDefaultSize;
+	// @TODO proper way to handle +1
+	GridSizeSettings.snake.startPosition = SnakeGame::Position{GridSize.X/2 + 1, GridSize.Y/2 + 1};
+	return GridSizeSettings;
 }
 
 void ASC_GameMode::Tick(float DeltaSeconds)
