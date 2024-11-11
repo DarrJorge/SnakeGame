@@ -13,6 +13,10 @@ using namespace SnakeGame;
 
 Game::Game(const Settings& settings) : c_settings(settings)
 {
+	checkf(settings.gridSize.width / 2 >= settings.snake.defaultSize,
+		TEXT("Snake initial length [%i] doesn't for grid width [%i]"),
+		settings.snake.defaultSize, settings.gridSize.width);
+	
 	m_grid = MakeShared<Grid>(settings.gridSize);
 	m_snake = MakeShared<Snake>(settings.snake);
 	m_food = MakeShared<Food>();
@@ -25,13 +29,11 @@ void Game::update(float deltaSeconds, const Input& input)
 {
 	if (m_gameOver || !updateTime(deltaSeconds)) return;
 	
-	move(input);
+	m_snake->move(input);
 	
 	if (died())
 	{
-		m_gameOver = true;
-		UE_LOG(LogSnakeGame, Display, TEXT("------------------ GAME OVER ------------------"));
-		UE_LOG(LogSnakeGame, Display, TEXT("------------------ SCORE: %i ------------------"), m_score);
+		gameOver();
 		return;
 	}
 
@@ -41,17 +43,20 @@ void Game::update(float deltaSeconds, const Input& input)
 		m_snake->increaseTail();
 		generateFood();
 	}
+
+	updateGrid();
 }
 
-void Game::move(const Input& input)
+void Game::gameOver()
 {
-	m_snake->move(input);
-	updateGrid();
+	m_gameOver = true;
+	UE_LOG(LogSnakeGame, Display, TEXT("------------------ GAME OVER ------------------"));
+	UE_LOG(LogSnakeGame, Display, TEXT("------------------ SCORE: %i ------------------"), m_score);
 }
 
 void Game::updateGrid()
 {
-	m_grid->update(m_snake->body(), CellType::Snake);
+	m_grid->update(m_snake->links().GetHead(), CellType::Snake);
 	m_grid->printDebug();
 }
 
@@ -71,8 +76,18 @@ bool Game::died() const
 
 void Game::generateFood()
 {
-	m_food->setPosition(m_grid->randomEmptyPosition());
-	m_grid->update(m_food->getPosition(), CellType::Food);
+	Position foodPosition;
+	if (m_grid->randomEmptyPosition(foodPosition))
+	{
+		m_food->setPosition(foodPosition);
+		m_grid->update(m_food->getPosition(), CellType::Food);
+	}
+	else
+	{
+		m_gameOver = true;
+		UE_LOG(LogSnakeGame, Display, TEXT("------------------ GAME COMPLETED ------------------"));
+		UE_LOG(LogSnakeGame, Display, TEXT("------------------ SCORE: %i ------------------"), m_score);
+	}
 }
 
 bool Game::foodTaken() const

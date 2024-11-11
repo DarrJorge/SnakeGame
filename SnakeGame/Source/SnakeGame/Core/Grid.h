@@ -18,7 +18,7 @@ namespace SnakeGame
 		void update(const Position& position, CellType cellType);
 		bool hitTest(const Position& position, CellType cellType) const;
 
-		Position randomEmptyPosition() const;
+		bool randomEmptyPosition(Position& position) const;
 		
 		static Position center(uint32 width, uint32 height)
 		{

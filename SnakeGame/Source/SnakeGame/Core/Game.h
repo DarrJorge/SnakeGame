@@ -47,7 +47,7 @@ namespace SnakeGame
 		float m_moveSeconds{0.0f};
 		bool m_gameOver{false};
 
-		void move(const Input& input);
+		void gameOver();
 		void updateGrid();
 		bool updateTime(float deltaSeconds);
 		bool died() const;
