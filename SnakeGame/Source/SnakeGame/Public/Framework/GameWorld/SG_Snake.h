@@ -20,10 +20,10 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSubclassOf<AActor> SnakeHeadClass;
+	TSubclassOf<ASG_SnakeLink> SnakeHeadClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSubclassOf<AActor> SnakeBodyClass;
+	TSubclassOf<ASG_SnakeLink> SnakeBodyClass;
 	
 	virtual void BeginPlay() override;
 

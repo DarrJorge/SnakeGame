@@ -117,24 +117,24 @@ void ASC_GameMode::SetupInput()
 		auto* Input = Cast<UEnhancedInputComponent>(PlayerController->InputComponent);
 		check(Input);
 		
-		Input->BindAction(MoveForwardInputAction, ETriggerEvent::Triggered, this, &ThisClass::OnMoveForward);
-		Input->BindAction(MoveRightInputAction, ETriggerEvent::Triggered, this, &ThisClass::OnMoveRight);
+		Input->BindAction(MoveForwardInputAction, ETriggerEvent::Started, this, &ThisClass::OnMoveForward);
+		Input->BindAction(MoveRightInputAction, ETriggerEvent::Started, this, &ThisClass::OnMoveRight);
 		Input->BindAction(ResetGameInputAction, ETriggerEvent::Started, this, &ThisClass::OnResetGame);
 	}
 }
 
 void ASC_GameMode::OnMoveForward(const FInputActionValue& Value)
 {
-	const FVector2D InputValue = Value.Get<FVector2D>();
-	if (InputValue.X == 0.0) return;
-	SnakeInput = SnakeGame::Input{0, static_cast<int8>(InputValue.X)};
+	const float InputValue = Value.Get<float>();
+	if (InputValue == 0.0f) return;
+	SnakeInput = SnakeGame::Input{0, static_cast<int8>(InputValue)};
 }
 
 void ASC_GameMode::OnMoveRight(const FInputActionValue& Value)
 {
-	const FVector2D InputValue = Value.Get<FVector2D>();
-	if (InputValue.X == 0.0) return;
-	SnakeInput = SnakeGame::Input{static_cast<int8>(InputValue.X), 0};
+	const float InputValue = Value.Get<float>();
+	if (InputValue == 0.0f) return;
+	SnakeInput = SnakeGame::Input{static_cast<int8>(InputValue), 0};
 }
 
 void ASC_GameMode::OnResetGame(const FInputActionValue& Value)
@@ -146,7 +146,7 @@ void ASC_GameMode::OnResetGame(const FInputActionValue& Value)
 		
 		GridVisual->SetModel(CoreGame->getGrid(), CellSize);
 		SnakeVisual->SetModel(CoreGame->getSnake(), CellSize, CoreGame->getGrid()->getDimension());
-		SnakeInput = SnakeGame::Input{1, 0};
+		SnakeInput = SnakeGame::Input{SnakeGame::Input::Default};
 		NextColor();
 	}
 }
@@ -157,8 +157,7 @@ SnakeGame::Settings ASC_GameMode::MakeSettings() const
 	GridSizeSettings.gridSize = SnakeGame::Dimension{GridSize.X, GridSize.Y};
 	GridSizeSettings.gameSpeed = GameSpeed;
 	GridSizeSettings.snake.defaultSize = SnakeDefaultSize;
-	// @TODO proper way to handle +1
-	GridSizeSettings.snake.startPosition = SnakeGame::Position{GridSize.X/2 + 1, GridSize.Y/2 + 1};
+	GridSizeSettings.snake.startPosition = SnakeGame::Grid::center(GridSize.X, GridSize.Y);
 	return GridSizeSettings;
 }
 

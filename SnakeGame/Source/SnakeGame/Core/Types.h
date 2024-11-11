@@ -25,10 +25,12 @@ namespace SnakeGame
 
 		Input(int8 inX, int8 inY) : x(inX), y(inY){}
 
-		inline bool opposite(const Input& rhs) const
+		bool opposite(const Input& rhs) const
 		{
 			return (x == -rhs.x && x != 0) || (y == -rhs.y && y != 0);
 		}
+
+		static Input Default;
 	};
 
 	struct Position
@@ -44,6 +46,8 @@ namespace SnakeGame
 			return *this;
 		}
 
+		static Position Zero;
+
 	};
 	
 	struct Settings
@@ -53,7 +57,7 @@ namespace SnakeGame
 		struct Snake
 		{
 			uint32 defaultSize{4};
-			Position startPosition{0,0};
+			Position startPosition{Position::Zero};
 		} snake;
 
 		float gameSpeed{1.0f};
