@@ -24,8 +24,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<ASG_SnakeLink> SnakeBodyClass;
-	
-	virtual void BeginPlay() override;
 
 public:
 	void SetModel(const TSharedPtr<SnakeGame::Snake>& InSnake, uint32 InCellSize, const SnakeGame::Dimension& InDimension);
@@ -38,6 +36,7 @@ private:
 	TWeakPtr<SnakeGame::Snake> Snake;
 	uint32 CellSize;
 	SnakeGame::Dimension Dimension;
+	FLinearColor SnakeLinkColor;
 
 	UPROPERTY()
 	TArray<ASG_SnakeLink*> SnakeLinks;

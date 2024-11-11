@@ -9,6 +9,7 @@ namespace SnakeGame
 {
 	class Grid;
 	class Snake;
+	class Food;
 	
 	class Game
 	{
@@ -25,7 +26,13 @@ namespace SnakeGame
 		 * Return the pointer to the Snake object
 		 * @return TSharedPtr<Snake> pointer to the snake object
 		 */
-		TSharedPtr<Snake> getSnake() const {return m_snake; }
+		TSharedPtr<Snake> getSnake() const { return m_snake; }
+
+		/**
+		 * Return the pointer to the Food object
+		 * @return TSharedPtr<Food> pointer to the food object
+		*/
+		TSharedPtr<Food> getFood() const { return m_food; }
 
 		void update(float deltaSeconds, const Input& input);
 
@@ -33,6 +40,9 @@ namespace SnakeGame
 		const Settings c_settings;
 		TSharedPtr<Grid> m_grid;
 		TSharedPtr<Snake> m_snake;
+		TSharedPtr<Food> m_food;
+
+		uint32 m_score{0};
 
 		float m_moveSeconds{0.0f};
 		bool m_gameOver{false};
@@ -41,5 +51,7 @@ namespace SnakeGame
 		void updateGrid();
 		bool updateTime(float deltaSeconds);
 		bool died() const;
+		void generateFood();
+		bool foodTaken() const;
 	};
 }

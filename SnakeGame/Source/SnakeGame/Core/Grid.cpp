@@ -44,11 +44,22 @@ void Grid::update(const TPositionPtr* links, CellType cellType)
 	
 	while (link)
 	{
-		const auto index = posToIndex(link->GetValue());
-		m_cells[index] = cellType;
-		m_indByType[cellType].Add(index);
+		updateInternal(link->GetValue(), cellType);
 		link = link->GetNextNode();
 	}
+}
+
+void Grid::update(const Position& position, CellType cellType)
+{
+	resetCellsByType(cellType);
+	updateInternal(position, cellType);
+}
+
+void Grid::updateInternal(const Position& position, CellType cellType)
+{
+	const uint32 index = posToIndex(position);
+	m_cells[index] = cellType;
+	m_indByType[cellType].Add(index);
 }
 
 void Grid::resetCellsByType(CellType cellType)
@@ -66,6 +77,31 @@ bool Grid::hitTest(const Position& position, CellType cellType) const
 	return m_cells[posToIndex(position)] == cellType;
 }
 
+Position Grid::randomEmptyPosition() const
+{
+	const auto gridSize = c_dimension.width * c_dimension.height;
+	bool found = false;
+
+	uint32 index;
+	int counter = 0;
+	while (!found && counter < gridSize)
+	{
+		index = FMath::RandRange(0, gridSize - 1);
+		if (m_cells[index] == CellType::Empty)
+		{
+			found = true;
+		}
+		else counter++;
+	}
+	if (!found)
+	{
+		UE_LOG(LogGrid, Error, TEXT("Empty cell doesn't exist!"));
+		checkNoEntry();
+		return Position::Zero;
+	}
+	return indexToPos(index);
+}
+
 uint32 Grid::posToIndex(uint32 x, uint32 y) const
 {
 	return x + y * c_dimension.width;
@@ -74,6 +110,13 @@ uint32 Grid::posToIndex(uint32 x, uint32 y) const
 uint32 Grid::posToIndex(const Position& position) const
 {
 	return posToIndex(position.x, position.y);
+}
+
+Position Grid::indexToPos(uint32 index) const
+{
+	auto pos = Position(index % c_dimension.width, index / c_dimension.width);
+	UE_LOG(LogGrid, Warning, TEXT("index: %d, x:%d; y:%d"), index, pos.x, pos.y);
+	return Position(index % c_dimension.width, index / c_dimension.width);
 }
 
 void Grid::printDebug()
@@ -90,6 +133,7 @@ void Grid::printDebug()
 			case CellType::Empty: symbol = '0'; break;
 			case CellType::Wall: symbol = '*'; break;
 			case CellType::Snake: symbol = '_'; break;
+			case CellType::Food: symbol = 'F'; break;
 			}
 			line.AppendChar(symbol).AppendChar(' ');
 		}

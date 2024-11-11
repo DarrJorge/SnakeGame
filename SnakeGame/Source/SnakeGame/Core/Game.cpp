@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Grid.h"
 #include "Snake.h"
+#include "Food.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSnakeGame, All, All);
 
@@ -14,9 +15,10 @@ Game::Game(const Settings& settings) : c_settings(settings)
 {
 	m_grid = MakeShared<Grid>(settings.gridSize);
 	m_snake = MakeShared<Snake>(settings.snake);
+	m_food = MakeShared<Food>();
 
-	m_grid->update(m_snake->body(), CellType::Snake);
-	m_grid->printDebug();
+	updateGrid();
+	generateFood();
 }
 
 void Game::update(float deltaSeconds, const Input& input)
@@ -29,6 +31,15 @@ void Game::update(float deltaSeconds, const Input& input)
 	{
 		m_gameOver = true;
 		UE_LOG(LogSnakeGame, Display, TEXT("------------------ GAME OVER ------------------"));
+		UE_LOG(LogSnakeGame, Display, TEXT("------------------ SCORE: %i ------------------"), m_score);
+		return;
+	}
+
+	if (foodTaken())
+	{
+		m_score++;
+		m_snake->increaseTail();
+		generateFood();
 	}
 }
 
@@ -56,4 +67,15 @@ bool Game::died() const
 {
 	return m_grid->hitTest(m_snake->head(), CellType::Wall) ||
 		m_grid->hitTest(m_snake->head(), CellType::Snake);
+}
+
+void Game::generateFood()
+{
+	m_food->setPosition(m_grid->randomEmptyPosition());
+	m_grid->update(m_food->getPosition(), CellType::Food);
+}
+
+bool Game::foodTaken() const
+{
+	return m_grid->hitTest(m_snake->head(), CellType::Food);
 }

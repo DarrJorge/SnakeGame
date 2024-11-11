@@ -17,7 +17,7 @@ public:
 	ASG_SnakeLink();
 
 	void UpdateScale(uint32 CellSize) const;
-	void UpdateColors(const FLinearColor& Color) const;
+	void UpdateColor(const FLinearColor& Color) const;
 
 protected:
 	UPROPERTY(VisibleAnywhere)

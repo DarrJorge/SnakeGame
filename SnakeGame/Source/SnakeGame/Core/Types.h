@@ -14,8 +14,8 @@ namespace SnakeGame
 	{
 		Empty = 0,
 		Wall,
-		Snake
-		// Food,
+		Snake,
+		Food,
 	};
 
 	struct Input

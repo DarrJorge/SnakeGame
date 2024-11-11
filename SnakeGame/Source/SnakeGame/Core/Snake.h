@@ -13,6 +13,7 @@ namespace SnakeGame
 		const TPositionPtr* body() const { return m_links.GetHead()->GetNextNode(); }
 
 		void move(const Input& input);
+		void increaseTail();
 
 	private:
 		TSnakeList m_links;

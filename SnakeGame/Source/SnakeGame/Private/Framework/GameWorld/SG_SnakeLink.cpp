@@ -3,6 +3,7 @@
 
 #include "Framework/GameWorld/SG_SnakeLink.h"
 #include "Components/StaticMeshComponent.h"
+#include "Framework/GameWorld/SG_Utils.h"
 
 
 ASG_SnakeLink::ASG_SnakeLink() : Super()
@@ -18,18 +19,10 @@ ASG_SnakeLink::ASG_SnakeLink() : Super()
 
 void ASG_SnakeLink::UpdateScale(uint32 CellSize) const
 {
-	// scale mesh
-	check(LinkMesh->GetStaticMesh());
-	const FBox Box = LinkMesh->GetStaticMesh()->GetBoundingBox();
-	const auto Size = Box.GetSize();
-
-	check(Size.X);
-	check(Size.Y);
-	check(Size.Z);
-	LinkMesh->SetRelativeScale3D(FVector(CellSize / Size.X, CellSize / Size.Y, CellSize / Size.Z));
+	SnakeGame::SG_Utils::ScaleMesh(LinkMesh, FVector(CellSize));
 }
 
-void ASG_SnakeLink::UpdateColors(const FLinearColor& Color) const
+void ASG_SnakeLink::UpdateColor(const FLinearColor& Color) const
 {
 	if (auto* LinkMaterial = LinkMesh->CreateAndSetMaterialInstanceDynamic(0))
 	{

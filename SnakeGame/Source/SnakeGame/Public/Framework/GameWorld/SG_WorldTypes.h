@@ -26,4 +26,7 @@ struct FSnakeColors : public FTableRowBase
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	FLinearColor SnakeLinkColor;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FLinearColor FoodColor;
 };

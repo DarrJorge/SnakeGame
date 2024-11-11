@@ -14,7 +14,7 @@ class AExponentialHeightFog;
 class ASG_Grid;
 class UInputAction;
 class UInputMappingContext;
-
+class ASG_Food;
 
 UCLASS()
 class SNAKEGAME_API ASC_GameMode : public AGameModeBase
@@ -28,19 +28,22 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SnakeGrid", meta=(ClampMin="10", ClampMax="100"))
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SetUpSnakeGrid", meta=(ClampMin="10", ClampMax="100"))
 	FUint32Point GridSize{10, 10};
 
-	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SnakeGrid", meta=(ClampMin="10", ClampMax="100"))
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SetUpSnakeGrid", meta=(ClampMin="10", ClampMax="100"))
 	uint32 CellSize = 10;
 
-	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SnakeGrid")
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Design")
 	TSubclassOf<ASG_Grid> GridVisualClass;
 
-	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Snake")
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Design")
 	TSubclassOf<ASG_Snake> SnakeVisualClass;
 
-	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SnakeGrid")
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Design")
+	TSubclassOf<ASG_Food> FoodVisualClass;
+
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Design")
 	TObjectPtr<UDataTable> ColorsTable;
 
 	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Snake", meta=(ClampMin="4", ClampMax="10"))
@@ -70,6 +73,9 @@ private:
 
 	UPROPERTY()
 	ASG_Snake* SnakeVisual;
+
+	UPROPERTY()
+	ASG_Food* FoodVisual;
 
 	UPROPERTY()
 	AExponentialHeightFog* Fog;
