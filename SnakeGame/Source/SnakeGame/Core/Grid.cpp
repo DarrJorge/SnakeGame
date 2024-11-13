@@ -5,8 +5,9 @@ DEFINE_LOG_CATEGORY_STATIC(LogGrid, All, All);
 
 using namespace SnakeGame;
 
-Grid::Grid(const Dimension& dim)
-	: c_dimension(Dimension{dim.width + 2, dim.height + 2})
+Grid::Grid(const Dimension& dimension, const IPositionRandomizerPtr& randomizer)
+	: c_dimension(Dimension{dimension.width + 2, dimension.height + 2}),
+	m_posRandomizer(randomizer)
 {
 	/*
 	 * * * * * *
@@ -79,21 +80,7 @@ bool Grid::hitTest(const Position& position, CellType cellType) const
 
 bool Grid::randomEmptyPosition(Position& position) const
 {
-	const auto gridSize = c_dimension.width * c_dimension.height;
-	int numAttempts = 0;
-	position = Position::Zero;
-	
-	while (numAttempts < gridSize)
-	{
-		const auto index = FMath::RandRange(0, gridSize - 1);
-		if (m_cells[index] == CellType::Empty)
-		{
-			position = indexToPos(index);
-			return true;
-		}
-		numAttempts++;
-	}
-	return false;
+	return m_posRandomizer->generatePosition(c_dimension, m_cells, position);
 }
 
 uint32 Grid::posToIndex(uint32 x, uint32 y) const
@@ -104,13 +91,6 @@ uint32 Grid::posToIndex(uint32 x, uint32 y) const
 uint32 Grid::posToIndex(const Position& position) const
 {
 	return posToIndex(position.x, position.y);
-}
-
-Position Grid::indexToPos(uint32 index) const
-{
-	auto pos = Position(index % c_dimension.width, index / c_dimension.width);
-	UE_LOG(LogGrid, Warning, TEXT("index: %d, x:%d; y:%d"), index, pos.x, pos.y);
-	return Position(index % c_dimension.width, index / c_dimension.width);
 }
 
 void Grid::printDebug()
