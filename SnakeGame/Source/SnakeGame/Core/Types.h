@@ -30,7 +30,7 @@ namespace SnakeGame
 			return (x == -rhs.x && x != 0) || (y == -rhs.y && y != 0);
 		}
 
-		static Input Default;
+		static const Input Default;
 	};
 
 	struct Position
@@ -48,7 +48,7 @@ namespace SnakeGame
 			return *this;
 		}
 
-		static Position Zero;
+		static const Position Zero;
 
 	};
 	
@@ -78,4 +78,12 @@ namespace SnakeGame
 		}
 	};
 
+	enum class GameplayEvent
+	{
+		GameOver = 0,
+		GameCompleted,
+		FootTaken
+	};
+
+	using GameplayEventCallback = TFunction<void(GameplayEvent)>;
 }

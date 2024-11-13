@@ -32,6 +32,8 @@ public:
 
 	void UpdateColors(const FSnakeColors& Colors);
 
+	void Explode();
+
 private:
 	TWeakPtr<SnakeGame::Snake> Snake;
 	uint32 CellSize;

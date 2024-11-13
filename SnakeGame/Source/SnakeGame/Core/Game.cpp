@@ -10,7 +10,6 @@ DEFINE_LOG_CATEGORY_STATIC(LogSnakeGame, All, All);
 
 using namespace SnakeGame;
 
-
 Game::Game(const Settings& settings) : c_settings(settings)
 {
 	checkf(settings.gridSize.width / 2 >= settings.snake.defaultSize,
@@ -41,6 +40,7 @@ void Game::update(float deltaSeconds, const Input& input)
 	{
 		m_score++;
 		m_snake->increaseTail();
+		m_gameplayEventCallback(GameplayEvent::FootTaken);
 		generateFood();
 	}
 
@@ -50,14 +50,13 @@ void Game::update(float deltaSeconds, const Input& input)
 void Game::gameOver()
 {
 	m_gameOver = true;
-	UE_LOG(LogSnakeGame, Display, TEXT("------------------ GAME OVER ------------------"));
-	UE_LOG(LogSnakeGame, Display, TEXT("------------------ SCORE: %i ------------------"), m_score);
+	m_gameplayEventCallback(GameplayEvent::GameOver);
 }
 
 void Game::updateGrid()
 {
 	m_grid->update(m_snake->links().GetHead(), CellType::Snake);
-	m_grid->printDebug();
+	//m_grid->printDebug();
 }
 
 bool Game::updateTime(float deltaSeconds)
@@ -85,12 +84,16 @@ void Game::generateFood()
 	else
 	{
 		m_gameOver = true;
-		UE_LOG(LogSnakeGame, Display, TEXT("------------------ GAME COMPLETED ------------------"));
-		UE_LOG(LogSnakeGame, Display, TEXT("------------------ SCORE: %i ------------------"), m_score);
+		m_gameplayEventCallback(GameplayEvent::GameCompleted);
 	}
 }
 
 bool Game::foodTaken() const
 {
 	return m_grid->hitTest(m_snake->head(), CellType::Food);
+}
+
+void Game::subcribeOnGameplayEvent(GameplayEventCallback callback)
+{
+	m_gameplayEventCallback = callback;
 }

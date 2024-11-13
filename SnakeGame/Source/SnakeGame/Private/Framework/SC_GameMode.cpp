@@ -14,6 +14,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogSnakeGameMode, All, All);
+
 ASC_GameMode::ASC_GameMode()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -27,6 +29,7 @@ void ASC_GameMode::StartPlay()
 
 	// init core game
 	CoreGame = MakeUnique<SnakeGame::Game>(MakeSettings());
+	SubcribeOnGameEvents();
 
 	// init world grid
 	const FTransform GridOrigin = FTransform::Identity;
@@ -149,6 +152,7 @@ void ASC_GameMode::OnResetGame(const FInputActionValue& Value)
 	{
 		CoreGame.Reset(new SnakeGame::Game(MakeSettings()));
 		check(CoreGame.IsValid());
+		SubcribeOnGameEvents();
 		
 		GridVisual->SetModel(CoreGame->getGrid(), CellSize);
 		SnakeVisual->SetModel(CoreGame->getSnake(), CellSize, CoreGame->getGrid()->getDimension());
@@ -166,6 +170,33 @@ SnakeGame::Settings ASC_GameMode::MakeSettings() const
 	GridSizeSettings.snake.defaultSize = SnakeDefaultSize;
 	GridSizeSettings.snake.startPosition = SnakeGame::Grid::center(GridSize.X, GridSize.Y);
 	return GridSizeSettings;
+}
+
+void ASC_GameMode::SubcribeOnGameEvents()
+{
+	using namespace SnakeGame;
+
+	CoreGame->subcribeOnGameplayEvent([&](GameplayEvent event)
+	{
+		switch (event)
+		{
+		case GameplayEvent::GameOver:
+			UE_LOG(LogSnakeGameMode, Display, TEXT("------------------ GAME OVER ------------------"));
+			UE_LOG(LogSnakeGameMode, Display, TEXT("------------------ SCORE: %i ------------------"), CoreGame->getScore());
+			SnakeVisual->Explode();
+			break;
+			
+		case GameplayEvent::GameCompleted:
+			UE_LOG(LogSnakeGameMode, Display, TEXT("------------------ GAME COMPLETED ------------------"));
+			UE_LOG(LogSnakeGameMode, Display, TEXT("------------------ SCORE: %i ------------------"), CoreGame->getScore());
+			break;
+			
+		case GameplayEvent::FootTaken:
+			UE_LOG(LogSnakeGameMode, Display, TEXT("------------------ FOOD TAKEN ------------------"));
+			FoodVisual->Explode();
+			break;
+		}
+	});
 }
 
 void ASC_GameMode::Tick(float DeltaSeconds)

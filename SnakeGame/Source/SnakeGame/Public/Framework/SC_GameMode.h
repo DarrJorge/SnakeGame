@@ -94,5 +94,7 @@ private:
 	void OnResetGame(const FInputActionValue& Value);
 
 	SnakeGame::Settings MakeSettings() const;
+
+	void SubcribeOnGameEvents();
 	
 };
