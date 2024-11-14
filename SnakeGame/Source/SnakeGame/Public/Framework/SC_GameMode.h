@@ -15,6 +15,7 @@ class ASG_Grid;
 class UInputAction;
 class UInputMappingContext;
 class ASG_Food;
+class ASG_HUD;
 
 UCLASS()
 class SNAKEGAME_API ASC_GameMode : public AGameModeBase
@@ -65,20 +66,23 @@ protected:
 	TObjectPtr<UInputMappingContext> MappingContext;
 
 private:
-	TUniquePtr<SnakeGame::Game> CoreGame;
+	TSharedPtr<SnakeGame::Game> CoreGame;
 	SnakeGame::Input SnakeInput{SnakeGame::Input::Default};
 
 	UPROPERTY()
-	ASG_Grid* GridVisual;
+	TObjectPtr<ASG_Grid> GridVisual;
 
 	UPROPERTY()
-	ASG_Snake* SnakeVisual;
+	TObjectPtr<ASG_Snake> SnakeVisual;
 
 	UPROPERTY()
-	ASG_Food* FoodVisual;
+	TObjectPtr<ASG_Food> FoodVisual;
 
 	UPROPERTY()
-	AExponentialHeightFog* Fog;
+	TObjectPtr<AExponentialHeightFog> Fog;
+
+	UPROPERTY()
+	TObjectPtr<ASG_HUD> HUD;
 
 	uint32 ColorTableIndex{0};
 	

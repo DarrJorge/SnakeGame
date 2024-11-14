@@ -36,10 +36,9 @@ namespace SnakeGame
 		TSharedPtr<Food> getFood() const { return m_food; }
 
 		void update(float deltaSeconds, const Input& input);
-
 		uint32 getScore() const { return m_score; }
-
 		void subcribeOnGameplayEvent(GameplayEventCallback callback);
+		float gameTime() const { return m_gameTime; }
 
 	private:
 		const Settings c_settings;
@@ -48,8 +47,9 @@ namespace SnakeGame
 		TSharedPtr<Food> m_food;
 
 		uint32 m_score{0};
+		float m_gameTime{0.0f};
 
-		GameplayEventCallback m_gameplayEventCallback;
+		TArray<GameplayEventCallback> m_gameplayEventCallbacks;
 
 		float m_moveSeconds{0.0f};
 		bool m_gameOver{false};

@@ -36,6 +36,8 @@ public:
 
 	void Explode();
 
+	void Hide();
+
 private:
 	TWeakPtr<SnakeGame::Food> Food;
 	uint32 CellSize;

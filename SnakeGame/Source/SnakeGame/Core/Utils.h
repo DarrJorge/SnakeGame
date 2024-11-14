@@ -10,6 +10,7 @@ namespace SnakeGame
 	{
 	public:
 		virtual bool generatePosition(const Dimension& dim, const TArray<CellType>& cells, Position& position) const = 0;
+		virtual ~IPositionRandomizer() = default;
 	};
 
 	class PositionRandomizer : public IPositionRandomizer

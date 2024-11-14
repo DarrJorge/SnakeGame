@@ -13,6 +13,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Framework/UI/SG_HUD.h"
+#include "Framework/GameWorld/SG_Utils.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSnakeGameMode, All, All);
 
@@ -28,7 +30,7 @@ void ASC_GameMode::StartPlay()
 	check(GetWorld());
 
 	// init core game
-	CoreGame = MakeUnique<SnakeGame::Game>(MakeSettings());
+	CoreGame = MakeShared<SnakeGame::Game>(MakeSettings());
 	SubcribeOnGameEvents();
 
 	// init world grid
@@ -71,6 +73,12 @@ void ASC_GameMode::StartPlay()
 	UpdateColors();
 
 	SetupInput();
+
+	HUD = Cast<ASG_HUD>(PlayerController->GetHUD());
+	HUD->SetModel(CoreGame);
+	
+	const FString ResetGameKeyName = SnakeGame::SG_Utils::FindActionKeyName(MappingContext, ResetGameInputAction);
+	HUD->SetInputKeyNames(ResetGameKeyName);
 }
 
 void ASC_GameMode::UpdateColors() const
@@ -150,9 +158,10 @@ void ASC_GameMode::OnResetGame(const FInputActionValue& Value)
 {
 	if (const bool InputValue = Value.Get<bool>())
 	{
-		CoreGame.Reset(new SnakeGame::Game(MakeSettings()));
+		CoreGame = MakeShared<SnakeGame::Game>(MakeSettings());
 		check(CoreGame.IsValid());
 		SubcribeOnGameEvents();
+		HUD->SetModel(CoreGame);
 		
 		GridVisual->SetModel(CoreGame->getGrid(), CellSize);
 		SnakeVisual->SetModel(CoreGame->getSnake(), CellSize, CoreGame->getGrid()->getDimension());
@@ -184,6 +193,7 @@ void ASC_GameMode::SubcribeOnGameEvents()
 			UE_LOG(LogSnakeGameMode, Display, TEXT("------------------ GAME OVER ------------------"));
 			UE_LOG(LogSnakeGameMode, Display, TEXT("------------------ SCORE: %i ------------------"), CoreGame->getScore());
 			SnakeVisual->Explode();
+			FoodVisual->Hide();
 			break;
 			
 		case GameplayEvent::GameCompleted:
