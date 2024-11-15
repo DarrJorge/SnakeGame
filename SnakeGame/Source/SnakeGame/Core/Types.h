@@ -35,17 +35,22 @@ namespace SnakeGame
 
 	struct Position
 	{
-		uint32 x;
-		uint32 y;
+		uint32 x{0};
+		uint32 y{0};
 		
 		Position(uint32 inX, uint32 inY) : x(inX), y(inY) {}
-		Position(const Position& position = Position::Zero) : x(position.x), y(position.y){}
+		Position() = default;
 		
 		Position& operator+=(const Position& rhs)
 		{
 			x += rhs.x;
 			y += rhs.y;
 			return *this;
+		}
+
+		bool operator==(const Position& rhs) const
+		{
+			return x == rhs.x && y == rhs.y;
 		}
 
 		static const Position Zero;

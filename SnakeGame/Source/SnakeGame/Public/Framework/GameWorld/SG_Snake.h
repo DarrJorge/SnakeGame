@@ -9,6 +9,7 @@
 #include "SG_Snake.generated.h"
 
 class ASG_SnakeLink;
+class USG_ObjectPool;
 
 UCLASS()
 class SNAKEGAME_API ASG_Snake : public AActor
@@ -41,9 +42,7 @@ private:
 	TArray<TObjectPtr<ASG_SnakeLink>> SnakeLinks;
 
 	UPROPERTY()
-	TArray<TObjectPtr<ASG_SnakeLink>> SnakeLinksPool;
+	TObjectPtr<USG_ObjectPool> SnakeObjectPool{nullptr};
 
-	ASG_SnakeLink* Pop(const FTransform& Transform, const TSubclassOf<AActor>& SnakeLinkClass);
-	void Push(ASG_SnakeLink* Actor);
-	
+	void InitObjectPool();
 };

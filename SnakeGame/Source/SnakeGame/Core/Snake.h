@@ -10,6 +10,7 @@ namespace SnakeGame
 
 		const TSnakeList& links() const { return m_links; }
 		const Position head() const { return m_links.GetHead()->GetValue(); }
+		const Position tail() const { return m_links.GetTail()->GetValue(); }
 
 		void move(const Input& input);
 		void increaseTail();
