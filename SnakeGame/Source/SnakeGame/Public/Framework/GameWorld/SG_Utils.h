@@ -52,5 +52,22 @@ namespace SnakeGame
 
 			return FoundAction ? FoundAction->Key.GetDisplayName().ToString() : FString("None");
 		}
+
+		static void SetUIInput(UWorld* WorldContextObject, bool Enabled)
+		{
+			if (!WorldContextObject) return;
+			if (auto* PC = WorldContextObject->GetFirstPlayerController())
+			{
+				PC->SetShowMouseCursor(Enabled);
+				if (Enabled)
+				{
+					PC->SetInputMode(FInputModeGameAndUI().SetHideCursorDuringCapture(false));
+				}
+				else
+				{
+					PC->SetInputMode(FInputModeGameOnly());
+				}
+			}
+		}
 	};
 }

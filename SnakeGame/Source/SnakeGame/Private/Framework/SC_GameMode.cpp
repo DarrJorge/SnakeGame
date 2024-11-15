@@ -15,6 +15,7 @@
 #include "EnhancedInputComponent.h"
 #include "Framework/UI/SG_HUD.h"
 #include "Framework/GameWorld/SG_Utils.h"
+#include "Framework/SG_GameUserSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSnakeGameMode, All, All);
 
@@ -79,6 +80,8 @@ void ASC_GameMode::StartPlay()
 	
 	const FString ResetGameKeyName = SnakeGame::SG_Utils::FindActionKeyName(MappingContext, ResetGameInputAction);
 	HUD->SetInputKeyNames(ResetGameKeyName);
+
+	SnakeGame::SG_Utils::SetUIInput(GetWorld(), false);
 }
 
 void ASC_GameMode::UpdateColors() const
@@ -168,16 +171,30 @@ void ASC_GameMode::OnResetGame(const FInputActionValue& Value)
 		FoodVisual->SetModel(CoreGame->getFood(), CellSize, CoreGame->getGrid()->getDimension());
 		SnakeInput = SnakeGame::Input{SnakeGame::Input::Default};
 		NextColor();
+		
+		SnakeGame::SG_Utils::SetUIInput(GetWorld(), false);
 	}
 }
 
 SnakeGame::Settings ASC_GameMode::MakeSettings() const
 {
 	SnakeGame::Settings GridSizeSettings;
-	GridSizeSettings.gridSize = SnakeGame::Dimension{GridSize.X, GridSize.Y};
-	GridSizeSettings.gameSpeed = GameSpeed;
+#if WITH_EDITOR
+	if (bOverrideUserSettings)
+	{
+		GridSizeSettings.gridSize = SnakeGame::Dimension{GridSize.X, GridSize.Y};
+		GridSizeSettings.gameSpeed = GameSpeed;
+	}
+	else
+#endif
+		if (const auto* UserSettings = USG_GameUserSettings::Get())
+	{
+		GridSizeSettings.gridSize = UserSettings->GridSize();
+		GridSizeSettings.gameSpeed = UserSettings->GameSpeed();
+	}
+	
 	GridSizeSettings.snake.defaultSize = SnakeDefaultSize;
-	GridSizeSettings.snake.startPosition = SnakeGame::Grid::center(GridSize.X, GridSize.Y);
+	GridSizeSettings.snake.startPosition = SnakeGame::Grid::center(GridSizeSettings.gridSize.width, GridSizeSettings.gridSize.height);
 	return GridSizeSettings;
 }
 
@@ -194,6 +211,7 @@ void ASC_GameMode::SubcribeOnGameEvents()
 			UE_LOG(LogSnakeGameMode, Display, TEXT("------------------ SCORE: %i ------------------"), CoreGame->getScore());
 			SnakeVisual->Explode();
 			FoodVisual->Hide();
+			SG_Utils::SetUIInput(GetWorld(), true);
 			break;
 			
 		case GameplayEvent::GameCompleted:

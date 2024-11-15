@@ -18,9 +18,9 @@ void ASG_Snake::SetModel(const TSharedPtr<SnakeGame::Snake>& InSnake, uint32 InC
 	CellSize = InCellSize;
 	Dimension = InDimension;
 
-	for (auto* LinkActor : SnakeLinks)
+	for (auto LinkActor : SnakeLinks)
 	{
-		LinkActor->Destroy();
+		Push(LinkActor);
 	}
 	SnakeLinks.Empty();
 
@@ -32,9 +32,8 @@ void ASG_Snake::SetModel(const TSharedPtr<SnakeGame::Snake>& InSnake, uint32 InC
 	for (const auto& Link : Links)
 	{
 		const FTransform Transform = FTransform(SG_Utils::LinkPositionToVector(Link, CellSize, Dimension));
-		auto* LinkActor = GetWorld()->SpawnActorDeferred<ASG_SnakeLink>(i == 0 ? SnakeHeadClass : SnakeBodyClass, Transform);
+		auto* LinkActor = Pop(Transform, SnakeBodyClass);
 		LinkActor->UpdateScale(CellSize);
-		LinkActor->FinishSpawning(Transform);
 		SnakeLinks.Add(LinkActor);
 		++i;
 	}
@@ -48,7 +47,7 @@ void ASG_Snake::Tick(float DeltaTime)
 	const auto& Links = Snake.Pin()->links();
 	auto* LinkPtr = Links.GetHead();
 
-	for (auto* LinkActor : SnakeLinks)
+	for (auto LinkActor : SnakeLinks)
 	{
 		LinkActor->SetActorLocation(SG_Utils::LinkPositionToVector(LinkPtr->GetValue(), CellSize, Dimension));
 		LinkPtr = LinkPtr->GetNextNode();
@@ -58,14 +57,12 @@ void ASG_Snake::Tick(float DeltaTime)
 	while (LinkPtr)
 	{
 		const FTransform Transform = FTransform(SG_Utils::LinkPositionToVector(LinkPtr->GetValue(), CellSize, Dimension));
-		auto* LinkActor = GetWorld()->SpawnActorDeferred<ASG_SnakeLink>(SnakeBodyClass, Transform);
+		auto* LinkActor = Pop(Transform, SnakeBodyClass);
 		LinkActor->UpdateScale(CellSize);
 		LinkActor->UpdateColor(SnakeLinkColor);
-		LinkActor->FinishSpawning(Transform);
 		SnakeLinks.Add(LinkActor);
 		LinkPtr = LinkPtr->GetNextNode();
 	}
-	
 }
 
 void ASG_Snake::UpdateColors(const FSnakeColors& Colors)
@@ -79,8 +76,27 @@ void ASG_Snake::UpdateColors(const FSnakeColors& Colors)
 
 void ASG_Snake::Explode()
 {
-	for (auto* LinkActor : SnakeLinks)
+	for (auto LinkActor : SnakeLinks)
 	{
 		LinkActor->Explode();
 	}
+}
+
+ASG_SnakeLink* ASG_Snake::Pop(const FTransform& Transform, const TSubclassOf<AActor>& SnakeLinkClass)
+{
+	auto* LinkActor = SnakeLinksPool.IsEmpty() ?
+		GetWorld()->SpawnActor<ASG_SnakeLink>(SnakeLinkClass, Transform) : SnakeLinksPool.Pop().Get();
+		
+	check(LinkActor);
+	LinkActor->SetActorHiddenInGame(false);
+	return LinkActor;
+}
+
+void ASG_Snake::Push(ASG_SnakeLink* Actor)
+{
+	if (!Actor) return;
+	Actor->SetActorHiddenInGame(false);
+	Actor->UpdateColor(FLinearColor::Black);
+	Actor->SetActorLocation(FVector(0.0, 100.0 + SnakeLinksPool.Num() * 30.0, 0.0));
+	SnakeLinksPool.Add(Actor);
 }

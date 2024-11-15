@@ -29,10 +29,13 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SetUpSnakeGrid", meta=(ClampMin="10", ClampMax="100"))
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|General Settings")
+	bool bOverrideUserSettings{false};
+	
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|General Settings", meta=(ClampMin="10", ClampMax="100", EditCondition="bOverrideUserSettings"))
 	FUint32Point GridSize{10, 10};
 
-	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SetUpSnakeGrid", meta=(ClampMin="10", ClampMax="100"))
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|General Settings", meta=(ClampMin="10", ClampMax="100", EditCondition="bOverrideUserSettings"))
 	uint32 CellSize = 10;
 
 	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Design")
@@ -47,10 +50,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Design")
 	TObjectPtr<UDataTable> ColorsTable;
 
-	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Snake", meta=(ClampMin="4", ClampMax="10"))
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|General Settings", meta=(ClampMin="4", ClampMax="10", EditCondition="bOverrideUserSettings"))
 	uint32 SnakeDefaultSize{5};
 
-	UPROPERTY(EditDefaultsOnly, Category="TheSnake|General", meta=(ClampMin="0.01", ClampMax="10"))
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|General Settings", meta=(ClampMin="0.01", ClampMax="10", EditCondition="bOverrideUserSettings"))
 	float GameSpeed{1.0f};
 
 	UPROPERTY(EditDefaultsOnly, Category="TheSnake|SnakeInput")

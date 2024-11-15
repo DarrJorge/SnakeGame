@@ -20,9 +20,6 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSubclassOf<ASG_SnakeLink> SnakeHeadClass;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<ASG_SnakeLink> SnakeBodyClass;
 
 public:
@@ -41,6 +38,12 @@ private:
 	FLinearColor SnakeLinkColor;
 
 	UPROPERTY()
-	TArray<ASG_SnakeLink*> SnakeLinks;
+	TArray<TObjectPtr<ASG_SnakeLink>> SnakeLinks;
+
+	UPROPERTY()
+	TArray<TObjectPtr<ASG_SnakeLink>> SnakeLinksPool;
+
+	ASG_SnakeLink* Pop(const FTransform& Transform, const TSubclassOf<AActor>& SnakeLinkClass);
+	void Push(ASG_SnakeLink* Actor);
 	
 };
