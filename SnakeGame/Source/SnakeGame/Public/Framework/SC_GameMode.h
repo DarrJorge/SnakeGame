@@ -9,6 +9,7 @@
 #include "InputActionValue.h"
 #include "SC_GameMode.generated.h"
 
+class ASG_Trap;
 class ASG_Snake;
 class AExponentialHeightFog;
 class ASG_Grid;
@@ -48,6 +49,9 @@ protected:
 	TSubclassOf<ASG_Food> FoodVisualClass;
 
 	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Design")
+	TSubclassOf<ASG_Trap> TrapVisualClass;
+
+	UPROPERTY(EditDefaultsOnly, Category="TheSnake|Design")
 	TObjectPtr<UDataTable> ColorsTable;
 
 	UPROPERTY(EditDefaultsOnly, Category="TheSnake|General Settings", meta=(ClampMin="4", ClampMax="10", EditCondition="bOverrideUserSettings"))
@@ -81,6 +85,12 @@ private:
 	UPROPERTY()
 	TObjectPtr<ASG_Food> FoodVisual;
 
+	//UPROPERTY()
+	//TObjectPtr<ASG_Trap> TrapVisual;
+
+	UPROPERTY()
+	TArray<TObjectPtr<ASG_Trap>> TrapsVisual;
+
 	UPROPERTY()
 	TObjectPtr<AExponentialHeightFog> Fog;
 
@@ -96,6 +106,7 @@ private:
 	void NextColor();
 
 	void SetupInput();
+	void SpawnTrap(const TSharedPtr<SnakeGame::Trap>& InTrap);
 	void OnMoveForward(const FInputActionValue& Value);
 	void OnMoveRight(const FInputActionValue& Value);
 	void OnResetGame(const FInputActionValue& Value);

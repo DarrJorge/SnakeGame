@@ -3,6 +3,7 @@
 
 #include "Framework/UI/SG_StartGameWidget.h"
 #include "Components/Button.h"
+#include "Components/CheckBox.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/ComboBoxString.h"
@@ -44,6 +45,10 @@ void USG_StartGameWidget::NativeOnInitialized()
 	}
 	GridSizeComboBox->SetSelectedOption(UserSettings->GetCurrentGridSizeOption());
 	GridSizeComboBox->OnSelectionChanged.AddDynamic(this, &ThisClass::OnSelectionChanged);
+
+	check(UseTrapsCheckBox);
+	UseTrapsCheckBox->SetCheckedState(UserSettings->GetUseTrapsState());
+	UseTrapsCheckBox->OnCheckStateChanged.AddDynamic(this, &ThisClass::OnCheckBoxChecked);
 }
 
 void USG_StartGameWidget::OnStartGame()
@@ -64,12 +69,22 @@ void USG_StartGameWidget::OnSelectionChanged(FString SelectedItem, ESelectInfo::
 	}
 }
 
+void USG_StartGameWidget::OnCheckBoxChecked(bool bIsChecked)
+{
+	SaveSettings();
+}
+
 void USG_StartGameWidget::SaveSettings()
 {
 	if (auto* UserSettings = USG_GameUserSettings::Get())
 	{
 		const EGameSpeed GameSpeed = UserSettings->GameSpeedByName(GameSpeedComboBox->GetSelectedOption());
 		const EGridSize GridSize = UserSettings->GridSizeByName(GridSizeComboBox->GetSelectedOption());
-		UserSettings->SaveSnakeSettings(GameSpeed, GridSize);
+		const ECheckBoxState UseTrapsState = UseTrapsCheckBox->GetCheckedState();
+		
+		if (!UserSettings->TrySaveSnakeSettings(FSettingsData(GameSpeed, GridSize, UseTrapsState)))
+		{
+			UE_LOG(LogStartGameWidget, Error, TEXT("Can't save settings to file."))
+		}
 	}
 }

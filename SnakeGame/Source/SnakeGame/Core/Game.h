@@ -6,11 +6,13 @@
 #include "Types.h"
 #include "Utils.h"
 
+
 namespace SnakeGame
 {
 	class Grid;
 	class Snake;
 	class Food;
+	class Trap;
 	
 	class Game
 	{
@@ -35,6 +37,12 @@ namespace SnakeGame
 		*/
 		TSharedPtr<Food> getFood() const { return m_food; }
 
+		/**
+		 * Return the array to pointers to the Trap objects
+		 * @return TArray<TSharedPtr<Trap>> pointer to the trap objects
+		*/
+		TArray<TSharedPtr<Trap>> getTraps() const { return m_traps; }
+
 		void update(float deltaSeconds, const Input& input);
 		uint32 getScore() const { return m_score; }
 		void subcribeOnGameplayEvent(GameplayEventCallback callback);
@@ -46,8 +54,12 @@ namespace SnakeGame
 		TSharedPtr<Snake> m_snake;
 		TSharedPtr<Food> m_food;
 
+		TArray<TSharedPtr<Trap>> m_traps;
+
 		uint32 m_score{0};
+		uint32 m_lastScoreStep{0};
 		float m_gameTime{0.0f};
+		bool m_usingTraps{false};
 
 		TArray<GameplayEventCallback> m_gameplayEventCallbacks;
 
@@ -61,5 +73,7 @@ namespace SnakeGame
 		void generateFood();
 		bool foodTaken() const;
 		void dispatchEvent(GameplayEvent event);
+		void generateTraps();
+		bool canSpawnTrap() const;
 	};
 }

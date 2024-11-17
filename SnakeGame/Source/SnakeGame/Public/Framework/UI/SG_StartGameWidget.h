@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "SG_StartGameWidget.generated.h"
 
+class UCheckBox;
 class UButton;
 class UComboBoxString;
 
@@ -27,6 +28,9 @@ protected:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UComboBoxString> GridSizeComboBox;
 
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UCheckBox> UseTrapsCheckBox;
+
 	UPROPERTY(EditDefaultsOnly)
 	TSoftObjectPtr<UWorld> GameLevel;
 
@@ -41,6 +45,9 @@ private:
 
 	UFUNCTION()
 	void OnSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+
+	UFUNCTION()
+	void OnCheckBoxChecked(bool bIsChecked);
 
 	void SaveSettings();
 	

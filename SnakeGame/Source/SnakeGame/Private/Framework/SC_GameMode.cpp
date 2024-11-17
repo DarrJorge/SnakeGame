@@ -16,6 +16,7 @@
 #include "Framework/UI/SG_HUD.h"
 #include "Framework/GameWorld/SG_Utils.h"
 #include "Framework/SG_GameUserSettings.h"
+#include "Framework/GameWorld/SG_Trap.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSnakeGameMode, All, All);
 
@@ -31,7 +32,8 @@ void ASC_GameMode::StartPlay()
 	check(GetWorld());
 
 	// init core game
-	CoreGame = MakeShared<SnakeGame::Game>(MakeSettings());
+	auto Settings = MakeSettings();
+	CoreGame = MakeShared<SnakeGame::Game>(Settings);
 	SubcribeOnGameEvents();
 
 	// init world grid
@@ -52,6 +54,14 @@ void ASC_GameMode::StartPlay()
 	check(FoodVisual);
 	FoodVisual->SetModel(CoreGame->getFood(), CellSize, CoreGame->getGrid()->getDimension());
 	FoodVisual->FinishSpawning(GridOrigin);
+
+	if (!Settings.hasTraps)
+	{
+		for (auto Trap : TrapsVisual)
+		{
+			Trap->Hide();
+		}
+	}
 	
 	// set pawn location fitting grid in viewport
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
@@ -93,6 +103,11 @@ void ASC_GameMode::UpdateColors() const
 		GridVisual->UpdateColors(*ColorSet);
 		SnakeVisual->UpdateColors(*ColorSet);
 		FoodVisual->UpdateColor(ColorSet->FoodColor);
+		
+		for (const auto TrapVisual : TrapsVisual)
+		{
+			TrapVisual->UpdateColor(ColorSet->TrapColor);
+		}
 
 		// update scene ambient color via fog
 		if (Fog && Fog->GetComponent())
@@ -143,6 +158,25 @@ void ASC_GameMode::SetupInput()
 	}
 }
 
+void ASC_GameMode::SpawnTrap(const TSharedPtr<SnakeGame::Trap>& InTrap)
+{
+	auto Trap = GetWorld()->SpawnActorDeferred<ASG_Trap>(TrapVisualClass, FTransform::Identity);
+	check(Trap);
+	Trap->SetModel(InTrap, CellSize, CoreGame->getGrid()->getDimension());
+	Trap->FinishSpawning(FTransform::Identity);
+	TrapsVisual.Add(Trap);
+
+	const FName RowName = ColorsTable->GetRowNames()[ColorTableIndex];
+
+	if (const auto ColorSet = ColorsTable->FindRow<FSnakeColors>(RowName, {}))
+	{
+		for (const auto TrapVisual : TrapsVisual)
+		{
+			TrapVisual->UpdateColor(ColorSet->TrapColor);
+		}
+	}
+}
+
 void ASC_GameMode::OnMoveForward(const FInputActionValue& Value)
 {
 	const float InputValue = Value.Get<float>();
@@ -169,6 +203,18 @@ void ASC_GameMode::OnResetGame(const FInputActionValue& Value)
 		GridVisual->SetModel(CoreGame->getGrid(), CellSize);
 		SnakeVisual->SetModel(CoreGame->getSnake(), CellSize, CoreGame->getGrid()->getDimension());
 		FoodVisual->SetModel(CoreGame->getFood(), CellSize, CoreGame->getGrid()->getDimension());
+
+		for (auto Trap : TrapsVisual)
+		{
+			Trap->Destroy();
+		}
+		TrapsVisual.Empty();
+		for (auto TrapPtr : CoreGame->getTraps())
+		{
+			SpawnTrap(TrapPtr);
+		}
+
+		//TrapVisual->SetModel(CoreGame->getTraps()[0], CellSize, CoreGame->getGrid()->getDimension());
 		SnakeInput = SnakeGame::Input{SnakeGame::Input::Default};
 		NextColor();
 		
@@ -191,6 +237,7 @@ SnakeGame::Settings ASC_GameMode::MakeSettings() const
 	{
 		GridSizeSettings.gridSize = UserSettings->GridSize();
 		GridSizeSettings.gameSpeed = UserSettings->GameSpeed();
+		GridSizeSettings.hasTraps = UserSettings->GetUseTraps();	
 	}
 	
 	GridSizeSettings.snake.defaultSize = SnakeDefaultSize;
@@ -234,5 +281,10 @@ void ASC_GameMode::Tick(float DeltaSeconds)
 	if (CoreGame.IsValid())
 	{
 		CoreGame->update(DeltaSeconds, SnakeInput);
+
+		if (CoreGame->getTraps().Num() != TrapsVisual.Num())
+		{
+			SpawnTrap(CoreGame->getTraps().Last());
+		}
 	}
 }

@@ -23,6 +23,22 @@ enum class EGridSize : uint8
 	Size_80x20
 };
 
+USTRUCT()
+struct FSettingsData
+{
+	GENERATED_BODY()
+
+	EGameSpeed GameSpeed;
+	EGridSize GridSize;
+	ECheckBoxState UseTrapsState;
+
+	FSettingsData() = default;
+	FSettingsData(EGameSpeed InGameSpeed, EGridSize InGridSize, ECheckBoxState InUseTrapsState)
+		: GameSpeed(InGameSpeed), GridSize(InGridSize), UseTrapsState(InUseTrapsState)
+	{}
+};
+
+
 UCLASS()
 class SNAKEGAME_API USG_GameUserSettings : public UGameUserSettings
 {
@@ -35,11 +51,12 @@ public:
 	
 	TArray<FString> GameSpeedOptions() const { return OptionNames(GameSpeeds); }
 	TArray<FString> GridSizesOptions() const { return OptionNames(GridSizes); }
-
-	void SaveSnakeSettings(EGameSpeed GameSpeed, EGridSize GridSize);
+	
+	bool TrySaveSnakeSettings(FSettingsData InData);
 
 	FORCEINLINE FString GetCurrentGameSpeedOption() const { return CurrentSpeed.Name; }
 	FORCEINLINE FString GetCurrentGridSizeOption() const { return CurrentGridSize.Name; }
+	FORCEINLINE ECheckBoxState GetUseTrapsState() const { return bUseTraps ? ECheckBoxState::Checked : ECheckBoxState::Unchecked; }
 	FORCEINLINE bool GetUseTraps() const { return bUseTraps; }
 	FORCEINLINE float GameSpeed() const { return CurrentSpeed.Value; }
 	FORCEINLINE SnakeGame::Dimension GridSize() const { return CurrentGridSize.Value; }
@@ -84,6 +101,8 @@ private:
 	FSpeedData CurrentSpeed{GameSpeeds[EGameSpeed::Snake]};
 	FGridData CurrentGridSize{GridSizes[EGridSize::Size_50x15]};
 	bool bUseTraps{false};
+
+	FString SaveSlotName = FString("SG_SaveSettings");
 
 	template<typename MapType, typename EnumType>
 	EnumType FindOptionByNameOrDefault(const MapType& Map, const FString& Name, EnumType Default) const;

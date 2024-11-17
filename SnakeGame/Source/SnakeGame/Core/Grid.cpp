@@ -48,12 +48,17 @@ void Grid::update(const TPositionPtr* links, CellType cellType)
 		updateInternal(link->GetValue(), cellType);
 		link = link->GetNextNode();
 	}
+	//printDebug();
 }
 
-void Grid::update(const Position& position, CellType cellType)
+void Grid::update(const Position& position, CellType cellType, bool resetCells)
 {
-	resetCellsByType(cellType);
+	if (resetCells)
+	{
+		resetCellsByType(cellType);
+	}
 	updateInternal(position, cellType);
+	//printDebug();
 }
 
 void Grid::updateInternal(const Position& position, CellType cellType)
@@ -104,10 +109,11 @@ void Grid::printDebug()
 			TCHAR symbol;
 			switch (m_cells[posToIndex(x, y)])
 			{
-			case CellType::Empty: symbol = '0'; break;
+			case CellType::Empty: symbol = '.'; break;
 			case CellType::Wall: symbol = '*'; break;
-			case CellType::Snake: symbol = '_'; break;
+			case CellType::Snake: symbol = '='; break;
 			case CellType::Food: symbol = 'F'; break;
+			case CellType::Trap: symbol = 'T'; break;
 			}
 			line.AppendChar(symbol).AppendChar(' ');
 		}

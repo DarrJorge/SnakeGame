@@ -5,6 +5,7 @@
 #include "Grid.h"
 #include "Snake.h"
 #include "Food.h"
+#include "Trap.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSnakeGame, All, All);
 
@@ -20,6 +21,8 @@ Game::Game(const Settings& settings, const IPositionRandomizerPtr& randomizer)
 	m_grid = MakeShared<Grid>(settings.gridSize, randomizer);
 	m_snake = MakeShared<Snake>(settings.snake);
 	m_food = MakeShared<Food>();
+	
+	m_usingTraps = settings.hasTraps;
 
 	updateGrid();
 	generateFood();
@@ -44,6 +47,12 @@ void Game::update(float deltaSeconds, const Input& input)
 		m_snake->increaseTail();
 		dispatchEvent(GameplayEvent::FootTaken);
 		generateFood();
+	}
+
+	if (canSpawnTrap())
+	{
+		m_lastScoreStep = m_score;
+		generateTraps();
 	}
 
 	updateGrid();
@@ -72,6 +81,7 @@ bool Game::updateTime(float deltaSeconds)
 bool Game::died(const Position& prevTailPosition) const
 {
 	if (m_grid->hitTest(m_snake->head(), CellType::Wall)) return true;
+	if (m_grid->hitTest(m_snake->head(), CellType::Trap)) return true;
 	if (m_snake->head() == prevTailPosition) return false;
 	return m_grid->hitTest(m_snake->head(), CellType::Snake);
 }
@@ -105,6 +115,28 @@ void Game::dispatchEvent(GameplayEvent event)
 			callback(event);
 		}
 	}
+}
+
+void Game::generateTraps()
+{
+	Position trapPosition;
+	if (m_grid->randomEmptyPosition(trapPosition))
+	{
+		const TSharedPtr<Trap> newTrap = MakeShared<Trap>();
+		newTrap->setPosition(trapPosition);
+		m_traps.Add(newTrap);
+		m_grid->update(newTrap->getPosition(), CellType::Trap, false);
+	}
+	else
+	{
+		m_gameOver = true;
+		dispatchEvent(GameplayEvent::GameCompleted);
+	}
+}
+
+bool Game::canSpawnTrap() const
+{
+	return m_usingTraps && m_score > m_lastScoreStep && (m_score % 3) == 0;
 }
 
 void Game::subcribeOnGameplayEvent(GameplayEventCallback callback)

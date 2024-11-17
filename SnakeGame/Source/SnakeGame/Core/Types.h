@@ -16,6 +16,7 @@ namespace SnakeGame
 		Wall,
 		Snake,
 		Food,
+		Trap
 	};
 
 	struct Input
@@ -68,6 +69,7 @@ namespace SnakeGame
 		} snake;
 
 		float gameSpeed{1.0f};
+		bool hasTraps{false};
 	};
 
 

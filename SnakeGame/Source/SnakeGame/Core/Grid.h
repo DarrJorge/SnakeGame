@@ -16,7 +16,7 @@ namespace SnakeGame
 		void printDebug();
 
 		void update(const TPositionPtr* links, CellType cellType);
-		void update(const Position& position, CellType cellType);
+		void update(const Position& position, CellType cellType, bool resetCells = true);
 		bool hitTest(const Position& position, CellType cellType) const;
 
 		bool randomEmptyPosition(Position& position) const;
@@ -32,7 +32,8 @@ namespace SnakeGame
 		TMap<CellType, TArray<uint32>> m_indByType = {
 			{CellType::Snake, {}},
 			{CellType::Wall, {}},
-			{CellType::Food, {}}
+			{CellType::Food, {}},
+			{CellType::Trap, {}}
 		};
 
 		TSharedPtr<IPositionRandomizer> m_posRandomizer;
