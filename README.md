@@ -1,3 +1,3 @@
-# SnakeGame
+# SnakeGame3D
 
-# The Snake Game released for demonstrating skills in development, creating tests using C++ and Unreal.
+## This game released on Unreal engine as test project for demonstrating skills on Unreal and C++.
